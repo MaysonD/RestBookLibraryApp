@@ -12,17 +12,17 @@ import java.util.List;
 @Path("/users")
 public class UserService {
 
-    UserDao userDao = new UserDaoImpl();
+    private UserDao userDao = new UserDaoImpl();
 
     @GET
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public List<User> getUsers() {
         return userDao.getAllUsers();
     }
 
     @GET
     @Path("/{userId}/books")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public List<Book> getUserBooks(@PathParam("userId") int userId) {
         User user = userDao.findById(userId);
         return user.getBooks();
@@ -30,26 +30,36 @@ public class UserService {
 
     @GET
     @Path("/{userId}")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public User getUser(@PathParam("userId") int userId) {
         return userDao.findById(userId);
     }
 
-    @POST
-    @Produces({ MediaType.APPLICATION_JSON})
-    public void addUser(User book) {
-        userDao.saveUser(book);
+    @PUT
+    @Produces({MediaType.APPLICATION_JSON})
+    public void addUser(@QueryParam("name") String name,
+                        @QueryParam("password") String password) {
+        User user = new User();
+        user.setName(name);
+        user.setPassword(password);
+        userDao.saveUser(user);
     }
 
     @PUT
-    @Produces({ MediaType.APPLICATION_JSON })
-    public void updateUser(User book) {
-        userDao.updateUser(book);
+    @Path("/{userId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public void updateUser(@PathParam("userId") int userId,
+                           @QueryParam("name") String name,
+                           @QueryParam("password") String password) {
+        User user = userDao.findById(userId);
+        user.setName(name);
+        user.setPassword(password);
+        userDao.updateUser(user);
     }
 
     @DELETE
     @Path("/{userId}")
-    @Produces({ MediaType.APPLICATION_JSON })
+    @Produces({MediaType.APPLICATION_JSON})
     public void deleteUser(@PathParam("userId") int userId) {
         userDao.removeUser(userId);
     }

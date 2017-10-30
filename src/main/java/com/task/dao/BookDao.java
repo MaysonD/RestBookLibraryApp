@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface BookDao {
 
-    List<Book> getAllBooks();
+    List<Book> getNotAssignedBooks();
 
     void saveBook(Book book);
 

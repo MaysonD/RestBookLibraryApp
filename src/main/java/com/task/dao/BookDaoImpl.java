@@ -10,15 +10,15 @@ import java.util.List;
 public class BookDaoImpl implements BookDao {
 
     @Override
-    public List<Book> getAllBooks() {
+    public List<Book> getNotAssignedBooks() {
         EntityManager entityManager = HibernateUtil.getEntityManagerFactory().createEntityManager();
         entityManager.getTransaction().begin();
         String query = "";
         if (System.getProperty("storage").equals("mongo")) {
-            query = "db.books.find({})";
+            query = "db.books.find({user_id: null })";
         }
         if (System.getProperty("storage").equals("mysql")) {
-            query = "SELECT * from books";
+            query = "SELECT * from books WHERE user_id is NULL";
         }
         List<Book> books = entityManager.createNativeQuery(query, Book.class).getResultList();
         entityManager.getTransaction().commit();

@@ -33,6 +33,10 @@ public class User {
         return books;
     }
 
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
     public void removeBook(Book book) {
         book.setUser(this);
         books.remove(book);
@@ -47,10 +51,6 @@ public class User {
             }
         }
         return accountEntity;
-    }
-
-    public void setBooks(List<Book> books) {
-        this.books = books;
     }
 
     public int getId() {
